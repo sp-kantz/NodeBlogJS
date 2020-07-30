@@ -1,13 +1,13 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-
+const passport=require('passport');
 const router = express.Router();
 
 let Article=require('../models/article');
+let User=require('../models/user');
 
 router.post('/add', [
     body('title', 'Title is required').notEmpty(),
-    body('author', 'Author is required').notEmpty(),
     body('body', 'Body is required').notEmpty() ], function(req, res){
     
     const errors = validationResult(req);
@@ -18,7 +18,7 @@ router.post('/add', [
     else{
         let article=new Article();
         article.title=req.body.title;
-        article.author=req.body.author;
+        article.author=req.user._id;
         article.body=req.body.body;
 
         article.save(function(err){
@@ -34,17 +34,17 @@ router.post('/add', [
     }
 });
 
-router.get('/add', function(req, res){
+router.get('/add', ensureAuth, function(req, res){
     res.render('add_article', {
         title: 'Add Article'
     });
 });
 
-router.get('/edit/:id', function(req, res){
+router.get('/edit/:id', ensureAuth, function(req, res){
     Article.findById(req.params.id, function(err, article){
-        if(err){
-            console.log(err);
-            return;
+        if(article.author!=req.user.id){
+            req.flash('danger', 'Not authorized');
+            res.redirect('/');
         }
         else{
             res.render('edit_article', {
@@ -76,12 +76,25 @@ router.post('/edit/:id', function(req, res){
 });
 
 router.delete('/:id', function(req, res){
+    if(!req.user._id){
+        res.status(500).send();
+    }
+
     let query={_id:req.params.id}
-    Article.remove(query, function(err){
-        if(err){
-            console.log(err);
+
+    Article.findById(req.params.id, function(err, article){
+        if(article.author!=req.user._id){
+            res.status(500).send();
         }
-        res.send('Success');
+        else
+        {
+            Article.remove(query, function(err){
+                if(err){
+                    console.log(err);
+                }
+                res.send('Success');
+            });
+        }
     });
 });
 
@@ -92,11 +105,25 @@ router.get('/:id', function(req, res){
             return;
         }
         else{
-            res.render('article', {
-                article:article
+            User.findById(article.author, function(err, user){
+                res.render('article', {
+                    article:article,
+                    author:user.name
+                });
             });
+            
         }
     });
 });
+
+function ensureAuth(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    else{
+        req.flash('danger', 'Please login');
+        res.redirect('/users/login');
+    }
+}
 
 module.exports=router;
