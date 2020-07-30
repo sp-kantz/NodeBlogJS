@@ -7,7 +7,7 @@ html
 
     body
         nav.navbar.navbar-expand-md.navbar-dark.bg-dark
-            a.navbar-brand(href='/') NodeTest
+            a.navbar-brand(href='/') NodeBlogJS
             button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarsExampleDefault', aria-controls='navbarsExampleDefault', aria-expanded='false', aria-label='Toggle navigation')
                 span.navbar-toggler-icon
             #navbarsExampleDefault.collapse.navbar-collapse
@@ -37,10 +37,7 @@ html
                 each error, i in errors
                     div(class="alert alert-danger") #{error.msg}
             block content
-            br
-            hr
-            footer
-                p copyright &copy;
+            
 
         script(src='/bower_components/jquery/dist/jquery.js')
         script(src='/bower_components/bootstrap/dist/js/bootstrap.js')

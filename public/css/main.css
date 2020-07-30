@@ -1,0 +1,33 @@
+body{
+    background-color: rgb(149, 175, 182);
+    font-size: 18px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.list-group-item{
+    margin-top: 5px;
+    background-color: rgb(163, 191, 199);
+}
+
+.list-group-item:hover{
+    background-color: rgb(174, 201, 209);
+}
+
+a{
+    color: rgb(43, 40, 40);
+    text-decoration: none;
+    display: block;
+}
+
+a:hover{
+    text-decoration: none;
+    color: rgb(27, 27, 26);
+}
+
+h1{
+    text-align: center;
+}
+
+.info{
+    text-align: right;
+}

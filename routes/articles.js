@@ -21,6 +21,7 @@ router.post('/add', [
         article.title=req.body.title;
         article.author=req.user._id;
         article.body=req.body.body;
+        article.created_at=new Date();
 
         article.save(function(err){
             if(err){

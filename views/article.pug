@@ -3,7 +3,9 @@ extends layout
 block content
 
     h1=article.title
-    h5 written by #{author}
+    div.info
+        h4 written by #{author}
+        small #{article.created_at.getDate()}/#{article.created_at.getMonth()}/#{article.created_at.getFullYear()}-#{article.created_at.getHours()}:#{article.created_at.getMinutes()}:#{article.created_at.getSeconds()} 
     p= article.body
     hr
     if user
