@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    br
+    h3 Your Articles
+    if articles
+        ul.list-group
+            each article, i in articles
+                li.list-group-item
+                    a(href="/articles/"+article.id) #{article.title}
+                    small #{article.created_at.getDate()}/#{article.created_at.getMonth()}/#{article.created_at.getFullYear()} - #{article.created_at.getHours()}:#{article.created_at.getMinutes()}:#{article.created_at.getSeconds()} 
+    
+    br
+    h3 Your Comments
+    if comments
+        ul.list-group
+            each comment, j in comments
+                li.list-group-item
+                    small #{comment.created_at.getDate()}/#{comment.created_at.getMonth()}/#{comment.created_at.getFullYear()} - #{comment.created_at.getHours()}:#{comment.created_at.getMinutes()}:#{comment.created_at.getSeconds()} 
+                    a(href="/articles/"+comment.article) #{comment.text}

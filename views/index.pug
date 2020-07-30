@@ -6,3 +6,5 @@ block content
         each article, i in articles
             li.list-group-item
                 a(href="/articles/"+article._id)= article.title
+                small #{article.created_at.getDate()}/#{article.created_at.getMonth()}/#{article.created_at.getFullYear()} - #{article.created_at.getHours()}:#{article.created_at.getMinutes()}:#{article.created_at.getSeconds()} 
+                small by #{article.username}

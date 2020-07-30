@@ -57,7 +57,7 @@ app.get('*', function(req, res, next){
 });
 
 app.get('/', function(req, res){
-    Article.find({}, function(err, articles){
+    Article.find({}).sort([['created_at', -1]]).exec(function(err, articles){
         if(err){
             console.log(err);
         }
@@ -73,6 +73,8 @@ app.get('/', function(req, res){
 let articles=require('./routes/articles');
 let users=require('./routes/users');
 let comments=require('./routes/comments');
+let profile=require('./routes/profile');
+app.use('/profile', profile);
 app.use('/comments', comments);
 app.use('/articles', articles);
 app.use('/users', users);

@@ -19,7 +19,8 @@ router.post('/add', [
     else{
         let article=new Article();
         article.title=req.body.title;
-        article.author=req.user._id;
+        article.user_id=req.user._id;
+        article.username=req.user.name;
         article.body=req.body.body;
         article.created_at=new Date();
 
@@ -44,7 +45,7 @@ router.get('/add', ensureAuth, function(req, res){
 
 router.get('/edit/:id', ensureAuth, function(req, res){
     Article.findById(req.params.id, function(err, article){
-        if(article.author!=req.user.id){
+        if(article.user_id!=req.user.id){
             req.flash('danger', 'Not authorized');
             res.redirect('/');
         }
@@ -60,7 +61,8 @@ router.get('/edit/:id', ensureAuth, function(req, res){
 router.post('/edit/:id', function(req, res){
     let article={};
     article.title=req.body.title;
-    article.author=req.body.author;
+    article.user_id=req.user.id;
+    article.username=req.user.name;
     article.body=req.body.body;
 
     let query={_id:req.params.id}
@@ -107,7 +109,7 @@ router.get('/:id', function(req, res){
             return;
         }
         else{
-            User.findById(article.author, function(err, user){
+            User.findById(article.user_id, function(err, user){
                 let query={article:req.params.id}
                 Comment.find(query).sort([['created_at', -1]]).exec(function(err, comments){
                     res.render('article', {

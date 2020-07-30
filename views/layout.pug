@@ -16,7 +16,9 @@ html
                         a.nav-link(href='/')
                             | Home 
                             span.sr-only (current)
-                    if user        
+                    if user  
+                        li.nav-item
+                            a.nav-link(href='/profile') Profile     
                         li.nav-item
                             a.nav-link(href='/articles/add') Add Article
                 ul.nav.navbar-nav
