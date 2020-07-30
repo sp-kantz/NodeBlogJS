@@ -5,6 +5,7 @@ const router = express.Router();
 
 let Article=require('../models/article');
 let User=require('../models/user');
+let Comment=require('../models/comment');
 
 router.post('/add', [
     body('title', 'Title is required').notEmpty(),
@@ -106,12 +107,15 @@ router.get('/:id', function(req, res){
         }
         else{
             User.findById(article.author, function(err, user){
-                res.render('article', {
-                    article:article,
-                    author:user.name
+                let query={article:req.params.id}
+                Comment.find(query).sort([['created_at', -1]]).exec(function(err, comments){
+                    res.render('article', {
+                        article:article,
+                        author:user.name,
+                        comments:comments
+                    });
                 });
             });
-            
         }
     });
 });

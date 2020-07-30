@@ -10,3 +10,22 @@ block content
         if user.id==article.author
             a.btn.btn-default(href="/articles/edit/"+article._id) Edit
             a.btn.btn-danger.delete-article(href="#", data-id=article._id) Delete
+        hr
+        form(method='POST', action='/comments/add/'+article._id)
+            #form-group
+                textarea.form-control(name='comment')
+            br
+            input.btn.btn-primary(type='submit', value='submit')
+    hr
+    h5 Comments
+    div.container
+        if comments
+            ul.list-group
+                each comment, i in comments
+                    li.list-group-item
+                        small #{comment.username} said on #{comment.created_at.getDate()}/#{comment.created_at.getMonth()}/#{comment.created_at.getFullYear()}-#{comment.created_at.getHours()}:#{comment.created_at.getMinutes()}:#{comment.created_at.getSeconds()} 
+                        br
+                        p #{comment.text}
+                        if user
+                            if user.id==comment.user_id
+                                a.btn.btn-danger.btn-xs.delete-comment(href="#", comment-id=comment._id, article=article._id) Delete

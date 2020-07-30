@@ -72,6 +72,8 @@ app.get('/', function(req, res){
 
 let articles=require('./routes/articles');
 let users=require('./routes/users');
+let comments=require('./routes/comments');
+app.use('/comments', comments);
 app.use('/articles', articles);
 app.use('/users', users);
 
